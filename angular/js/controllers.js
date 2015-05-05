@@ -47,13 +47,9 @@ app.controller('IssuesController', function($scope, IssuesService) {
 
 	$scope.deleteIssue = function(issueToDelete) {
 		IssuesService.delete(issueToDelete._id).success(function() {
-			console.log('$scope.issues', $scope.issues);
-			
 			for (var category in $scope.issues) {
 				$scope.issues[category].forEach(function(issue, issueIndex) {
-					console.log('issue', issue);
 					if (issue._id === issueToDelete._id) {
-						console.log('found issue');
 						issue.deleted = true;
 						return;
 					}
