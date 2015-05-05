@@ -20,8 +20,6 @@ app.controller('IssuesController', function($scope, IssuesService) {
 		$scope.issues.archived = issues;
 	});
 
-	var recentlyDeletedIssues = [];
-
 	$scope.newIssue = {};
 
 	$scope.createIssue = function() {
