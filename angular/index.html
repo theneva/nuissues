@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html ng-app="nuissues">
+<head>
+	<meta charset="UTF-8">
+	<title>NUIssues</title>
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body ng-controller="IssuesController">
+<div class="container">
+	<form class="form-group" ng-submit="createIssue()">
+		<label>
+			New issue
+			<input type="text" class="form-control" ng-model="newIssue.title"/>
+		</label>
+	</form>
+
+	<div>
+		<h2>To do</h2>
+		<p ng-if="issues.todo.length === 0">No issues to do!</p>
+		<table class="table table-striped" ng-if="issues.todo.length > 0">
+			<tr ng-if="issues.todo.length > 0">
+				<th>Title</th>
+				<th>Status</th>
+				<th>Actions</th>
+			</tr>
+			<tr ng-repeat="issue in issues.todo">
+				<td>
+					<input type="text" class="form-control" ng-model="issue.title"/>
+				</td>
+				<td>
+					<input type="text" class="form-control" ng-model="issue.status"/>
+				</td>
+				<td>
+					<button class="btn btn-primary" ng-click="updateIssue(issue._id, issue)">Update</button>
+					<button ng-if="!issue.deleted" class="btn btn-danger" ng-click="deleteIssue(issue)">Delete</button>
+					<button ng-if="issue.deleted" class="btn btn-default" ng-click="restoreIssue(issue)">Restore</button>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div>
+		<h2>Doing</h2>
+		<p ng-if="issues.doing.length === 0">No current issues!</p>
+		<ul ng-repeat="issue in issues.doing">
+			<li>
+				<form class="form-group form-inline" ng-submit="updateIssue(issue._id, issue.title)">
+					<input type="text" class="form-control" ng-model="issue.title"/>
+					<button class="btn btn-primary">Update</button>
+				</form>
+			</li>
+		</ul>
+	</div>
+	<div>
+		<h2>Done</h2>
+		<p ng-if="issues.done.length === 0">No issues are done!</p>
+		<ul ng-repeat="issue in issues.done">
+			<li>
+				<form class="form-group form-inline" ng-submit="updateIssue(issue._id, issue.title)">
+					<input type="text" class="form-control" ng-model="issue.title">
+					<button class="btn btn-primary">Update</button>
+				</form>
+			</li>
+		</ul>
+	</div>
+	<div>
+		<h2>Archived</h2>
+		<p ng-if="issues.archived.length === 0">No archived issues!</p>
+		<ul ng-repeat="issue in issues.archived">
+			<li>
+				<form class="form-group form-inline" ng-submit="updateIssue(issue._id, issue.title)">
+					<input type="text" class="form-control" ng-model="issue.title">
+					<button class="btn btn-primary">Update</button>
+				</form>
+			</li>
+		</ul>
+	</div>
+</div>
+<script src="node_modules/lodash/index.js"></script>
+<script src="node_modules/angular/angular.js"></script>
+<script src="js/controllers.js"></script>
+</body>
+</html>
