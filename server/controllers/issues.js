@@ -9,7 +9,6 @@ router.get('/', function(req, res) {
 			return res.json(issues);
 		});		
 	} else {
-		console.log('status=', status);
 		Issue.find({status: status}, function(err, issues) {
 			return res.json(issues);
 		});
@@ -30,6 +29,17 @@ router.put('/:id', function(req, res) {
 		if (!issue) {
 			return res.status(404).send('No issue found with id: ' + id);
 		}
+
+		var oldIssue = {
+			_id: issue._id,
+			title: issue.title,
+			description: issue.description,
+			status: issue.status,
+			minutesLogged: issue.minutesLogged,
+			created: issue.created,
+			__v: issue.__v
+		};
+
 		var fields = req.body;
 		if (fields.title) {
 			issue.title = fields.title;
@@ -44,7 +54,7 @@ router.put('/:id', function(req, res) {
 			issue.minuesLogged = fields.minutesLogged;
 		}
 		issue.save(function() {
-			return res.json(issue);
+			return res.json(oldIssue);
 		});
 	});
 });

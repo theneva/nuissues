@@ -3,7 +3,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>NUIssues</title>
-	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css"/>
+	<link rel="stylesheet" href="node_modules/ng-sortable/dist/ng-sortable.css"/>
+	<link rel="stylesheet" href="node_modules/ng-sortable/dist/ng-sortable.style.css"/>
+	<link rel="stylesheet" href="css/style.css"/>
 </head>
 <body ng-controller="IssuesController">
 <div class="container">
@@ -14,74 +17,80 @@
 		</label>
 	</form>
 
-	<div>
+	<div class="swimlane">
 		<h2>To do</h2>
 		<p ng-if="issues.todo.length === 0">No issues to do!</p>
-		<table class="table table-striped" ng-if="issues.todo.length > 0">
-			<thead>
-				<tr ng-if="issues.todo.length > 0">
-					<th>Title</th>
-					<th>Status</th>
-					<th>Actions</th>
-				</tr>
-			</thead>
-			<tbody as-sortable ng-model="issues.todo">
-				<tr as-sortable-item ng-repeat="issue in issues.todo">
-					<td as-sortable-item-handle>
-						<input type="text" class="form-control" ng-model="issue.title"/>
-					</td>
-					<td>
-						<input type="text" class="form-control" ng-model="issue.status"/>
-					</td>
-					<td>
-						<button class="btn btn-primary" ng-click="updateIssue(issue._id, issue)">Update</button>
-						<button ng-if="!issue.deleted" class="btn btn-danger" ng-click="deleteIssue(issue)">Delete</button>
-						<button ng-if="issue.deleted" class="btn btn-default" ng-click="restoreIssue(issue)">Restore</button>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		
+		<div as-sortable ng-model="issues.todo" class="issue-list-container">
+			<div class="issue-container" as-sortable-item ng-repeat="issue in issues.todo">
+				<div as-sortable-item-handle ng-class="{issue: true, deleted: issue.deleted}">
+					<input class="title form-control" ng-model="issue.title"/>
+					<span class="controls-delete">
+						<a ng-if="!issue.deleted" class="delete" href="javascript:void(0)" ng-click="issue.deleted = true">x</a>
+						<a ng-if="issue.deleted" class="restore" href="javascript:void(0)" ng-click="deleteIssue(issue)">✓</a>
+					</span>
+					<div class="created">{{issue.created | date: 'short'}}</div>
+					<div class="controls">
+						<button class="btn btn-primary" ng-click="updateIssue(issue)">Update</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div>
+	<div class="swimlane">
 		<h2>Doing</h2>
 		<p ng-if="issues.doing.length === 0">No current issues!</p>
-		<ul as-sortable ng-model="issues.doing">
-			<li as-sortable-item style="background-color: orange;" ng-repeat="issue in issues.doing">
-				<form as-sortable-item-handle  style="padding: 15px;" class="form-group form-inline" ng-submit="updateIssue(issue._id, issue.title)">
-					<input type="text" class="form-control" ng-model="issue.title"/>
-					<button class="btn btn-primary">Update</button>
-				</form>
-			</li>
-		</ul>
+		<div as-sortable ng-model="issues.doing" class="issue-list-container">
+			<div class="issue-container" as-sortable-item ng-repeat="issue in issues.doing">
+				<div as-sortable-item-handle ng-class="{issue: true, deleted: issue.deleted}">
+					<input class="title form-control" ng-model="issue.title"/>
+					<span class="controls-delete">
+						<a ng-if="!issue.deleted" class="delete" href="javascript:void(0)" ng-click="issue.deleted = true">x</a>
+						<a ng-if="issue.deleted" class="restore" href="javascript:void(0)" ng-click="deleteIssue(issue)">✓</a>
+					</span>
+					<div class="created">{{issue.created | date: 'short'}}</div>
+					<div class="controls">
+						<button class="btn btn-primary" ng-click="updateIssue(issue)">Update</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
+	<div class="swimlane">
+		<h2>Done</h2>
+		<p ng-if="issues.done.length === 0">No completed issues!</p>
+		<div as-sortable ng-model="issues.done" class="issue-list-container">
+			<div class="issue-container" as-sortable-item ng-repeat="issue in issues.done">
+				<div as-sortable-item-handle ng-class="{issue: true, deleted: issue.deleted}">
+					<input class="title form-control" ng-model="issue.title"/>
+					<span class="controls-delete">
+						<a ng-if="!issue.deleted" class="delete" href="javascript:void(0)" ng-click="issue.deleted = true">x</a>
+						<a ng-if="issue.deleted" class="restore" href="javascript:void(0)" ng-click="deleteIssue(issue)">✓</a>
+					</span>
+					<div class="created">{{issue.created | date: 'short'}}</div>
+					<div class="controls">
+						<button class="btn btn-primary" ng-click="updateIssue(issue)">Update</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--
 	<div>
 		<h2>Done</h2>
 		<p ng-if="issues.done.length === 0">No issues are done!</p>
-		<ul ng-repeat="issue in issues.done">
-			<li>
-				<form class="form-group form-inline" ng-submit="updateIssue(issue._id, issue.title)">
-					<input type="text" class="form-control" ng-model="issue.title">
-					<button class="btn btn-primary">Update</button>
-				</form>
-			</li>
-		</ul>
 	</div>
 	<div>
 		<h2>Archived</h2>
 		<p ng-if="issues.archived.length === 0">No archived issues!</p>
-		<ul ng-repeat="issue in issues.archived">
-			<li>
-				<form class="form-group form-inline" ng-submit="updateIssue(issue._id, issue.title)">
-					<input type="text" class="form-control" ng-model="issue.title">
-					<button class="btn btn-primary">Update</button>
-				</form>
-			</li>
-		</ul>
+		-->
 	</div>
 </div>
 <script src="node_modules/lodash/index.js"></script>
 <script src="node_modules/angular/angular.js"></script>
 <script src="node_modules/ng-sortable/dist/ng-sortable.js"></script>
-<script src="js/controllers.js"></script>
+<script src="js/module.js"></script>
+<script src="js/issues/issues.controller.js"></script>
+<script src="js/issues/issues.service.js"></script>
 </body>
 </html>

@@ -1,8 +1,4 @@
-var app = angular.module('nuissues', [
-	'ui.sortable'
-]);
-
-app.controller('IssuesController', function($scope, IssuesService) {
+angular.module('nuissues').controller('IssuesController', function($scope, IssuesService) {
 	$scope.items = [
 		'hi',
 		'there',
@@ -12,19 +8,19 @@ app.controller('IssuesController', function($scope, IssuesService) {
 	$scope.issues = {};
 
 	IssuesService.readByStatus('todo').success(function(issues) {
-		$scope.issues.todo = issues;
+		$scope.issues.todo = issues || [];
 	});
 
 	IssuesService.readByStatus('doing').success(function(issues) {
-		$scope.issues.doing = issues;
+		$scope.issues.doing = issues || [];
 	});
 
 	IssuesService.readByStatus('done').success(function(issues) {
-		$scope.issues.done = issues;
+		$scope.issues.done = issues || [];
 	});
 
 	IssuesService.readByStatus('archived').success(function(issues) {
-		$scope.issues.archived = issues;
+		$scope.issues.archived = issues || [];
 	});
 
 	$scope.newIssue = {};
@@ -41,25 +37,30 @@ app.controller('IssuesController', function($scope, IssuesService) {
 		});
 	};
 
-	$scope.updateIssue = function(id, issue) {
+	$scope.updateIssue = function(issue) {
 		if (!issue.title || !issue.status) {
 			alert('Please fill out all fields');
 			return;
 		}
 
-		IssuesService.update(id, issue);
+		var legalStatuses = ['todo', 'doing'];
+
+		if (!_.includes(legalStatuses, issue.status)) {
+			alert('Please use of of the valid statuses: ' + legalStatuses);
+			return;
+		}
+
+		IssuesService.update(issue._id, issue).success(function(oldIssue) {
+			if (issue.status !== oldIssue.status) {
+				_.remove($scope.issues[oldIssue.status], {_id: oldIssue._id});
+				$scope.issues[issue.status].push(issue);
+			}
+		});
 	};
 
 	$scope.deleteIssue = function(issueToDelete) {
 		IssuesService.delete(issueToDelete._id).success(function() {
-			for (var category in $scope.issues) {
-				$scope.issues[category].forEach(function(issue, issueIndex) {
-					if (issue._id === issueToDelete._id) {
-						issue.deleted = true;
-						return;
-					}
-				});
-			}
+			_.remove($scope.issues[issueToDelete.status], {_id: issueToDelete._id});
 		});
 	};
 
@@ -74,29 +75,5 @@ app.controller('IssuesController', function($scope, IssuesService) {
 				});
 			}
 		});
-	};
-});
-
-app.service('IssuesService', function($http) {
-	var service = this;
-
-	service.create = function(issue) {
-		return $http.post('/api/issues', issue);
-	};
-
-	service.read = function() {
-		return $http.get('/api/issues');
-	};
-
-	service.readByStatus = function(status) {
-		return $http.get('/api/issues?status=' + status);
-	};
-
-	service.update = function(id, changedFields) {
-		return $http.put('/api/issues/' + id, changedFields);
-	};
-
-	service.delete = function(id) {
-		return $http.delete('/api/issues/' + id);
 	};
 });

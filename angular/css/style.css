@@ -1,0 +1,61 @@
+.container {
+	min-width: 900px;
+}
+
+.swimlane {
+	float: left;
+	min-height: 500px;
+	min-width: 230px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-right: 30px;
+	border: 2px solid black;
+	border-radius: 10px;
+}
+
+.swimlane h2 {
+	text-align: center;
+}
+
+.swimlane .issue-list-container {
+	min-height: 450px;
+}
+
+.issue-container {
+	height: 120px;
+	width: 200px;
+	border: 2px solid black;
+	border-radius: 10px;
+}
+
+.issue-container .issue {
+	padding: 5px;
+}
+
+.issue-container .issue.deleted {
+	background-color: red;
+}
+
+.issue-container .issue .controls-delete {
+	position: relative;
+	right: -10px;
+	top: -8px;
+	font-size: 30px;
+}
+
+.issue-container .issue .title {
+	position: relative;
+	top: -10px;
+	width: 80%;
+	display: inline;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.issue-container .issue .created {
+	font-size: 15px;
+}
+
+.issue-container .issue .controls {
+	margin-top: 10px;
+}
