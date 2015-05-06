@@ -1,9 +1,5 @@
 angular.module('nuissues').controller('IssuesController', function($scope, IssuesService) {
-	$scope.items = [
-		'hi',
-		'there',
-		'sup'
-	];
+	$scope.validStatuses = ['todo', 'doing', 'done'];
 
 	$scope.issues = {};
 
@@ -43,9 +39,7 @@ angular.module('nuissues').controller('IssuesController', function($scope, Issue
 			return;
 		}
 
-		var legalStatuses = ['todo', 'doing'];
-
-		if (!_.includes(legalStatuses, issue.status)) {
+		if (!_.includes($scope.validStatuses, issue.status)) {
 			alert('Please use of of the valid statuses: ' + legalStatuses);
 			return;
 		}

@@ -18,67 +18,25 @@
 		</label>
 	</form>
 
-	<div class="jumbotron swimlane">
-		<h2>To do</h2>
-		<p ng-if="issues.todo.length === 0">No issues to do!</p>
-		<div as-sortable ng-model="issues.todo" class="issue-list-container">
-			<div class="issue-container" as-sortable-item ng-repeat="issue in issues.todo">
-				<div as-sortable-item-handle ng-class="{issue: true, deleted: issue.deleted}">
-					<input class="title no-border" ng-model="issue.title" ng-change="issue.changed = true"/>
-					<span class="controls-delete">
-						<a ng-if="!issue.deleted" class="delete" href="javascript:void(0)" ng-click="issue.deleted = true">x</a>
-						<a ng-if="issue.deleted" class="restore" href="javascript:void(0)" ng-click="deleteIssue(issue)">✓</a>
-					</span>
-					<div class="created static">{{issue.created | date: 'short'}}</div>
-					<a ng-if="issue.changed" href="javascript:void(0)" class="control-update" ng-click="updateIssue(issue)">Save changes</a>
+	<span ng-repeat="status in validStatuses">
+		<div class="jumbotron swimlane">
+			<h2>{{status}}</h2>
+			<p ng-if="issues[status].length === 0">No issues!</p>
+			<div as-sortable ng-model="issues[status]" class="issue-list-container">
+				<div class="issue-container" as-sortable-item ng-repeat="issue in issues[status]">
+					<div as-sortable-item-handle ng-class="{issue: true, deleted: issue.deleted}">
+						<input class="title no-border" ng-model="issue.title" ng-change="issue.changed = true"/>
+						<span class="controls-delete">
+							<a ng-if="!issue.deleted" class="delete" href="javascript:void(0)" ng-click="issue.deleted = true">x</a>
+							<a ng-if="issue.deleted" class="restore" href="javascript:void(0)" ng-click="deleteIssue(issue)">✓</a>
+						</span>
+						<div class="created static">{{issue.created | date: 'short'}}</div>
+						<a ng-if="issue.changed" href="javascript:void(0)" class="control-update" ng-click="updateIssue(issue)">Save changes</a>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="jumbotron swimlane">
-		<h2>Doing</h2>
-		<p ng-if="issues.doing.length === 0">No issues in progress!</p>
-		<div as-sortable ng-model="issues.doing" class="issue-list-container">
-			<div class="issue-container" as-sortable-item ng-repeat="issue in issues.doing">
-				<div as-sortable-item-handle ng-class="{issue: true, deleted: issue.deleted}">
-					<input class="title no-border" ng-model="issue.title" ng-change="issue.changed = true"/>
-					<span class="controls-delete">
-						<a ng-if="!issue.deleted" class="delete" href="javascript:void(0)" ng-click="issue.deleted = true">x</a>
-						<a ng-if="issue.deleted" class="restore" href="javascript:void(0)" ng-click="deleteIssue(issue)">✓</a>
-					</span>
-					<div class="created static">{{issue.created | date: 'short'}}</div>
-					<a ng-if="issue.changed" href="javascript:void(0)" class="control-update" ng-click="updateIssue(issue)">Save changes</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="jumbotron swimlane">
-		<h2>Done</h2>
-		<p ng-if="issues.done.length === 0">No issues are done!</p>
-		<div as-sortable ng-model="issues.done" class="issue-list-container">
-			<div class="issue-container" as-sortable-item ng-repeat="issue in issues.done">
-				<div as-sortable-item-handle ng-class="{issue: true, deleted: issue.deleted}">
-					<input class="title no-border" ng-model="issue.title" ng-change="issue.changed = true"/>
-					<span class="controls-delete">
-						<a ng-if="!issue.deleted" class="delete" href="javascript:void(0)" ng-click="issue.deleted = true">x</a>
-						<a ng-if="issue.deleted" class="restore" href="javascript:void(0)" ng-click="deleteIssue(issue)">✓</a>
-					</span>
-					<div class="created static">{{issue.created | date: 'short'}}</div>
-					<a ng-if="issue.changed" href="javascript:void(0)" class="control-update" ng-click="updateIssue(issue)">Save changes</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!--
-	<div>
-		<h2>Done</h2>
-		<p ng-if="issues.done.length === 0">No issues are done!</p>
-	</div>
-	<div>
-		<h2>Archived</h2>
-		<p ng-if="issues.archived.length === 0">No archived issues!</p>
-	</div>
-	-->
+	</span>
 </div>
 <script src="node_modules/lodash/index.js"></script>
 <script src="node_modules/angular/angular.js"></script>
