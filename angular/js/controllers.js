@@ -1,7 +1,14 @@
 var app = angular.module('nuissues', [
+	'ui.sortable'
 ]);
 
 app.controller('IssuesController', function($scope, IssuesService) {
+	$scope.items = [
+		'hi',
+		'there',
+		'sup'
+	];
+
 	$scope.issues = {};
 
 	IssuesService.readByStatus('todo').success(function(issues) {

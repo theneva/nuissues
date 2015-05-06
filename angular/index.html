@@ -18,32 +18,36 @@
 		<h2>To do</h2>
 		<p ng-if="issues.todo.length === 0">No issues to do!</p>
 		<table class="table table-striped" ng-if="issues.todo.length > 0">
-			<tr ng-if="issues.todo.length > 0">
-				<th>Title</th>
-				<th>Status</th>
-				<th>Actions</th>
-			</tr>
-			<tr ng-repeat="issue in issues.todo">
-				<td>
-					<input type="text" class="form-control" ng-model="issue.title"/>
-				</td>
-				<td>
-					<input type="text" class="form-control" ng-model="issue.status"/>
-				</td>
-				<td>
-					<button class="btn btn-primary" ng-click="updateIssue(issue._id, issue)">Update</button>
-					<button ng-if="!issue.deleted" class="btn btn-danger" ng-click="deleteIssue(issue)">Delete</button>
-					<button ng-if="issue.deleted" class="btn btn-default" ng-click="restoreIssue(issue)">Restore</button>
-				</td>
-			</tr>
+			<thead>
+				<tr ng-if="issues.todo.length > 0">
+					<th>Title</th>
+					<th>Status</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody as-sortable ng-model="issues.todo">
+				<tr as-sortable-item ng-repeat="issue in issues.todo">
+					<td as-sortable-item-handle>
+						<input type="text" class="form-control" ng-model="issue.title"/>
+					</td>
+					<td>
+						<input type="text" class="form-control" ng-model="issue.status"/>
+					</td>
+					<td>
+						<button class="btn btn-primary" ng-click="updateIssue(issue._id, issue)">Update</button>
+						<button ng-if="!issue.deleted" class="btn btn-danger" ng-click="deleteIssue(issue)">Delete</button>
+						<button ng-if="issue.deleted" class="btn btn-default" ng-click="restoreIssue(issue)">Restore</button>
+					</td>
+				</tr>
+			</tbody>
 		</table>
 	</div>
 	<div>
 		<h2>Doing</h2>
 		<p ng-if="issues.doing.length === 0">No current issues!</p>
-		<ul ng-repeat="issue in issues.doing">
-			<li>
-				<form class="form-group form-inline" ng-submit="updateIssue(issue._id, issue.title)">
+		<ul as-sortable ng-model="issues.doing">
+			<li as-sortable-item style="background-color: orange;" ng-repeat="issue in issues.doing">
+				<form as-sortable-item-handle  style="padding: 15px;" class="form-group form-inline" ng-submit="updateIssue(issue._id, issue.title)">
 					<input type="text" class="form-control" ng-model="issue.title"/>
 					<button class="btn btn-primary">Update</button>
 				</form>
@@ -77,6 +81,7 @@
 </div>
 <script src="node_modules/lodash/index.js"></script>
 <script src="node_modules/angular/angular.js"></script>
+<script src="node_modules/ng-sortable/dist/ng-sortable.js"></script>
 <script src="js/controllers.js"></script>
 </body>
 </html>
