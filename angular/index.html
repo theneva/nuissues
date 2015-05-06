@@ -17,20 +17,21 @@
 			<input type="text" class="form-control" ng-model="newIssue.title"/>
 		</label>
 	</form>
-	<span ng-repeat="status in validStatuses">
+	<span id="board" ng-repeat="status in validStatuses">
 		<div class="jumbotron swimlane">
 			<h2>{{status}}</h2>
 			<p ng-if="issues[status].length === 0">No issues!</p>
-			<div as-sortable ng-model="issues[status]" class="issue-list-container">
+			<div as-sortable="swimlaneSortOptions" ng-model="issues[status]" class="issue-list-container">
 				<div class="issue-container" as-sortable-item ng-repeat="issue in issues[status]">
 					<div as-sortable-item-handle ng-class="{issue: true, deleted: issue.deleted}">
-						<input class="title no-border" ng-model="issue.title" ng-change="issue.changed = true"/>
+						<input class="title no-border" ng-model="issue.title" ng-change="issue.changed = true" ng-blur="issue.changed = true"/>
 						<span class="controls-delete">
 							<a ng-if="!issue.deleted" class="delete" href="javascript:void(0)" ng-click="issue.deleted = true">x</a>
 							<a ng-if="issue.deleted" class="restore" href="javascript:void(0)" ng-click="deleteIssue(issue)">✓</a>
 						</span>
 						<div class="created static">{{issue.created | date: 'short'}}</div>
-						<a ng-if="issue.changed" href="javascript:void(0)" class="control-update" ng-click="updateIssue(issue)">Save changes</a>
+						<!-- <a ng-if="issue.changed" href="javascript:void(0)" class="control-update" ng-click="updateIssue(issue)">Save changes</a> -->
+						<a href="javascript:void(0)" class="control-update" ng-click="updateIssue(issue)">Save changes</a>
 					</div>
 				</div>
 			</div>

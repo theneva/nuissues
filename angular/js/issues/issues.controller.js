@@ -1,6 +1,18 @@
 angular.module('nuissues').controller('IssuesController', function($scope, IssuesService) {
 	$scope.validStatuses = ['todo', 'doing', 'done'];
 
+	$scope.swimlaneSortOptions = {
+	
+		itemMoved: function(event) {
+			console.log('dest', event.dest.sortableScope.$parent.status);
+			console.log('source', event.source.sortableScope.$parent.status);
+			// console.log('item', event.dest.sortableScope.modelValue[0]);
+		},
+		orderChanged: function(event) {
+			console.log('orderChanged event', event)
+		}
+	};
+
 	$scope.issues = {};
 
 	IssuesService.readByStatus('todo').success(function(issues) {
