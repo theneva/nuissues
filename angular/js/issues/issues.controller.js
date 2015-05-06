@@ -55,6 +55,8 @@ angular.module('nuissues').controller('IssuesController', function($scope, Issue
 				_.remove($scope.issues[oldIssue.status], {_id: oldIssue._id});
 				$scope.issues[issue.status].push(issue);
 			}
+
+			issue.changed = false;
 		});
 	};
 

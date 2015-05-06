@@ -1,5 +1,23 @@
+.no-border {
+	background-color: transparent;
+	border: 0px;
+}
+
+.no-border:focus {
+	outline: 1px;
+}
+
+.static {
+	color: gray;
+}
+
 .container {
-	min-width: 900px;
+
+}
+
+.jumbotron {
+	padding: 10px !important;
+	width: 30%;
 }
 
 .swimlane {
@@ -9,8 +27,6 @@
 	padding-left: 10px;
 	padding-right: 10px;
 	margin-right: 30px;
-	border: 2px solid black;
-	border-radius: 10px;
 }
 
 .swimlane h2 {
@@ -22,40 +38,45 @@
 }
 
 .issue-container {
-	height: 120px;
-	width: 200px;
-	border: 2px solid black;
-	border-radius: 10px;
+	height: 75px;
+	width: 255px;
+	margin-bottom: 0.7em;
 }
 
 .issue-container .issue {
 	padding: 5px;
+	background-color: transparent;
 }
 
 .issue-container .issue.deleted {
 	background-color: red;
 }
 
+.issue-container .issue .control-update {
+	position: relative;
+	float: right;
+	top: 1px;
+	right: -12px;
+}
+
 .issue-container .issue .controls-delete {
 	position: relative;
-	right: -10px;
-	top: -8px;
+	float: right;
+	right: 5px;
+	top: -12px;
 	font-size: 30px;
 }
 
 .issue-container .issue .title {
-	position: relative;
 	top: -10px;
 	width: 80%;
 	display: inline;
 	font-size: 18px;
 	font-weight: bold;
+	margin-bottom: 6px;
 }
 
 .issue-container .issue .created {
 	font-size: 15px;
-}
-
-.issue-container .issue .controls {
-	margin-top: 10px;
+	display: inline-block;
 }

@@ -2,6 +2,7 @@
 <html ng-app="nuissues">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>NUIssues</title>
 	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css"/>
 	<link rel="stylesheet" href="node_modules/ng-sortable/dist/ng-sortable.css"/>
@@ -17,60 +18,53 @@
 		</label>
 	</form>
 
-	<div class="swimlane">
+	<div class="jumbotron swimlane">
 		<h2>To do</h2>
 		<p ng-if="issues.todo.length === 0">No issues to do!</p>
-		
 		<div as-sortable ng-model="issues.todo" class="issue-list-container">
 			<div class="issue-container" as-sortable-item ng-repeat="issue in issues.todo">
 				<div as-sortable-item-handle ng-class="{issue: true, deleted: issue.deleted}">
-					<input class="title form-control" ng-model="issue.title"/>
+					<input class="title no-border" ng-model="issue.title" ng-change="issue.changed = true"/>
 					<span class="controls-delete">
 						<a ng-if="!issue.deleted" class="delete" href="javascript:void(0)" ng-click="issue.deleted = true">x</a>
 						<a ng-if="issue.deleted" class="restore" href="javascript:void(0)" ng-click="deleteIssue(issue)">✓</a>
 					</span>
-					<div class="created">{{issue.created | date: 'short'}}</div>
-					<div class="controls">
-						<button class="btn btn-primary" ng-click="updateIssue(issue)">Update</button>
-					</div>
+					<div class="created static">{{issue.created | date: 'short'}}</div>
+					<a ng-if="issue.changed" href="javascript:void(0)" class="control-update" ng-click="updateIssue(issue)">Save changes</a>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="swimlane">
+	<div class="jumbotron swimlane">
 		<h2>Doing</h2>
-		<p ng-if="issues.doing.length === 0">No current issues!</p>
+		<p ng-if="issues.doing.length === 0">No issues in progress!</p>
 		<div as-sortable ng-model="issues.doing" class="issue-list-container">
 			<div class="issue-container" as-sortable-item ng-repeat="issue in issues.doing">
 				<div as-sortable-item-handle ng-class="{issue: true, deleted: issue.deleted}">
-					<input class="title form-control" ng-model="issue.title"/>
+					<input class="title no-border" ng-model="issue.title" ng-change="issue.changed = true"/>
 					<span class="controls-delete">
 						<a ng-if="!issue.deleted" class="delete" href="javascript:void(0)" ng-click="issue.deleted = true">x</a>
 						<a ng-if="issue.deleted" class="restore" href="javascript:void(0)" ng-click="deleteIssue(issue)">✓</a>
 					</span>
-					<div class="created">{{issue.created | date: 'short'}}</div>
-					<div class="controls">
-						<button class="btn btn-primary" ng-click="updateIssue(issue)">Update</button>
-					</div>
+					<div class="created static">{{issue.created | date: 'short'}}</div>
+					<a ng-if="issue.changed" href="javascript:void(0)" class="control-update" ng-click="updateIssue(issue)">Save changes</a>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="swimlane">
+	<div class="jumbotron swimlane">
 		<h2>Done</h2>
-		<p ng-if="issues.done.length === 0">No completed issues!</p>
+		<p ng-if="issues.done.length === 0">No issues are done!</p>
 		<div as-sortable ng-model="issues.done" class="issue-list-container">
 			<div class="issue-container" as-sortable-item ng-repeat="issue in issues.done">
 				<div as-sortable-item-handle ng-class="{issue: true, deleted: issue.deleted}">
-					<input class="title form-control" ng-model="issue.title"/>
+					<input class="title no-border" ng-model="issue.title" ng-change="issue.changed = true"/>
 					<span class="controls-delete">
 						<a ng-if="!issue.deleted" class="delete" href="javascript:void(0)" ng-click="issue.deleted = true">x</a>
 						<a ng-if="issue.deleted" class="restore" href="javascript:void(0)" ng-click="deleteIssue(issue)">✓</a>
 					</span>
-					<div class="created">{{issue.created | date: 'short'}}</div>
-					<div class="controls">
-						<button class="btn btn-primary" ng-click="updateIssue(issue)">Update</button>
-					</div>
+					<div class="created static">{{issue.created | date: 'short'}}</div>
+					<a ng-if="issue.changed" href="javascript:void(0)" class="control-update" ng-click="updateIssue(issue)">Save changes</a>
 				</div>
 			</div>
 		</div>
@@ -83,8 +77,8 @@
 	<div>
 		<h2>Archived</h2>
 		<p ng-if="issues.archived.length === 0">No archived issues!</p>
-		-->
 	</div>
+	-->
 </div>
 <script src="node_modules/lodash/index.js"></script>
 <script src="node_modules/angular/angular.js"></script>
