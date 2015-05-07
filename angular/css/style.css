@@ -1,3 +1,8 @@
+body
+{
+	overflow: hidden;
+}
+
 .no-border {
 	background-color: transparent;
 	border: 0px;
@@ -22,7 +27,7 @@
 
 .swimlane {
 	float: left;
-	min-height: 500px;
+	height: 48em;
 	min-width: 230px;
 	padding-left: 10px;
 	padding-right: 10px;
@@ -34,7 +39,7 @@
 }
 
 .swimlane .issue-list-container {
-	min-height: 450px;
+	min-height: 42em;
 }
 
 .issue-container {
