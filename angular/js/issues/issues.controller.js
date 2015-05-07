@@ -3,16 +3,66 @@ angular.module('nuissues').controller('IssuesController', function($scope, Issue
 
 	$scope.swimlaneSortOptions = {
 		itemMoved: function(event) {
-			// var sourceIndex = event.source.index;
-			// var sourceStatus = event.source.sortableScope.$parent.status;
+			var sourceIndex = event.source.index;
+			var sourceStatus = event.source.sortableScope.$parent.status;
 			var destIndex = event.dest.index;
 			var destStatus = event.dest.sortableScope.$parent.status;
 
 			var issue = $scope.issues[destStatus][destIndex];
-			IssuesService.update(issue._id, {status: destStatus});
+			issue.status = destStatus;
+			issue.index = destIndex;
+
+			IssuesService.update(issue._id, {
+				status: issue.status,
+				index: issue.index
+			}).success(function() {
+				for (var i = sourceIndex; i < $scope.issues[sourceStatus].length; i++) {
+					var issueToUpdate = $scope.issues[sourceStatus][i];
+					issueToUpdate.index--;
+					IssuesService.update(issueToUpdate._id, {index: issueToUpdate.index});
+				}
+
+				for (var i = destIndex + 1; i < $scope.issues[destStatus].length; i++) {
+					var issueToUpdate = $scope.issues[destStatus][i];
+					issueToUpdate.index++;
+					IssuesService.update(issueToUpdate._id, {index: issueToUpdate.index});
+				}
+			});
 		},
 		orderChanged: function(event) {
-			console.log('orderChanged event', event);
+			var sourceIndex = event.source.index;
+			var destIndex = event.dest.index;
+			var destStatus = event.dest.sortableScope.$parent.status;
+			
+			var issue = $scope.issues[destStatus][destIndex];
+			
+			IssuesService.update(issue._id, {index: destIndex}).success(function() {
+				issue.index = destIndex;
+				issue.status = destStatus;
+
+				var start;
+				var end;
+
+				if (sourceIndex < destIndex) {
+					start = sourceIndex;
+					end = destIndex - 1;
+				} else {
+					start = destIndex + 1;
+					end = sourceIndex;
+				}
+
+				for (var i = start; i <= end; i++) {
+					var issueToUpdate = $scope.issues[destStatus][i];
+					
+					if (sourceIndex < destIndex) {
+						issueToUpdate.index--;
+					} else {
+						issueToUpdate.index++;
+					}
+
+					IssuesService.update(issueToUpdate._id, {index: issueToUpdate.index});
+				}
+			});
 		}
 	};
 
@@ -30,10 +80,6 @@ angular.module('nuissues').controller('IssuesController', function($scope, Issue
 		$scope.issues.done = issues || [];
 	});
 
-	IssuesService.readByStatus('archived').success(function(issues) {
-		$scope.issues.archived = issues || [];
-	});
-
 	$scope.newIssue = {};
 
 	$scope.createIssue = function() {
@@ -41,6 +87,8 @@ angular.module('nuissues').controller('IssuesController', function($scope, Issue
 			alert('Please enter a title');
 			return;
 		}
+
+		$scope.newIssue.index = $scope.issues.todo.length;
 
 		IssuesService.create($scope.newIssue).success(function(createdIssue) {
 			$scope.issues.todo.push(createdIssue);
@@ -72,6 +120,10 @@ angular.module('nuissues').controller('IssuesController', function($scope, Issue
 	$scope.deleteIssue = function(issueToDelete) {
 		IssuesService.delete(issueToDelete._id).success(function() {
 			_.remove($scope.issues[issueToDelete.status], {_id: issueToDelete._id});
+			for (var i = issueToDelete.index; i < $scope.issues[issueToDelete.status].length; i++) {
+				$scope.issues[issueToDelete.status][i].index--;
+				IssuesService.update(issueToDelete._id, {index: issueToDelete.index});
+			}
 		});
 	};
 

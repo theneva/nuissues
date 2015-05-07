@@ -9,9 +9,12 @@ router.get('/', function(req, res) {
 			return res.json(issues);
 		});		
 	} else {
-		Issue.find({status: status}, function(err, issues) {
-			return res.json(issues);
-		});
+		Issue.find()
+			.where({status: status})
+			.sort('index')
+			.exec(function(err, issues) {
+				return res.json(issues);
+			});
 	}
 });
 
@@ -35,22 +38,27 @@ router.put('/:id', function(req, res) {
 			title: issue.title,
 			description: issue.description,
 			status: issue.status,
+			index: issue.index,
 			minutesLogged: issue.minutesLogged,
 			created: issue.created,
 			__v: issue.__v
 		};
 
 		var fields = req.body;
-		if (fields.title) {
+
+		if (fields.title !== undefined) {
 			issue.title = fields.title;
 		}
-		if (fields.description) {
+		if (fields.description !== undefined) {
 			issue.description = fields.description;
 		}
-		if (fields.status) {
+		if (fields.status !== undefined) {
 			issue.status = fields.status;
 		}
-		if (fields.minutesLogged) {
+		if (fields.index !== undefined) {
+			issue.index = fields.index;
+		}
+		if (fields.minutesLogged !== undefined) {
 			issue.minuesLogged = fields.minutesLogged;
 		}
 		issue.save(function() {
