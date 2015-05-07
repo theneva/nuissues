@@ -3,9 +3,13 @@ angular.module('nuissues').controller('IssuesController', function($scope, Issue
 
 	$scope.swimlaneSortOptions = {
 		itemMoved: function(event) {
-			console.log('dest', event.dest.sortableScope.$parent.status);
-			console.log('source', event.source.sortableScope.$parent.status);
-			// console.log('item', event.dest.sortableScope.modelValue[0]);
+			// var sourceIndex = event.source.index;
+			// var sourceStatus = event.source.sortableScope.$parent.status;
+			var destIndex = event.dest.index;
+			var destStatus = event.dest.sortableScope.$parent.status;
+
+			var issue = $scope.issues[destStatus][destIndex];
+			IssuesService.update(issue._id, {status: destStatus});
 		},
 		orderChanged: function(event) {
 			console.log('orderChanged event', event);
