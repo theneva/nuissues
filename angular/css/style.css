@@ -84,3 +84,12 @@ body {
 	font-size: 15px;
 	display: inline-block;
 }
+
+#bottom-fade {
+	width: 600px;
+	height: 200px;
+	z-index: 99;
+	position: fixed;
+	bottom: -20px;
+	background: url("bottom-fade.png") bottom center no-repeat;
+}
