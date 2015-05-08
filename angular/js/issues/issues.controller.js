@@ -16,16 +16,16 @@ angular.module('nuissues').controller('IssuesController', function($scope, Issue
 				status: issue.status,
 				index: issue.index
 			}).success(function() {
-				for (var i = sourceIndex; i < $scope.issues[sourceStatus].length; i++) {
-					var issueToUpdate = $scope.issues[sourceStatus][i];
-					issueToUpdate.index--;
-					IssuesService.update(issueToUpdate._id, {index: issueToUpdate.index});
+				for (var issueBelowSourceIndex = sourceIndex; issueBelowSourceIndex < $scope.issues[sourceStatus].length; issueBelowSourceIndex++) {
+					var issueBelowSource = $scope.issues[sourceStatus][issueBelowSourceIndex];
+					issueBelowSource.index--;
+					IssuesService.update(issueBelowSource._id, {index: issueBelowSource.index});
 				}
 
-				for (var i = destIndex + 1; i < $scope.issues[destStatus].length; i++) {
-					var issueToUpdate = $scope.issues[destStatus][i];
-					issueToUpdate.index++;
-					IssuesService.update(issueToUpdate._id, {index: issueToUpdate.index});
+				for (var issueBelowDestIndex = destIndex + 1; issueBelowDestIndex < $scope.issues[destStatus].length; issueBelowDestIndex++) {
+					var issueBelowDest = $scope.issues[destStatus][issueBelowDestIndex];
+					issueBelowDest.index++;
+					IssuesService.update(issueBelowDest._id, {index: issueBelowDest.index});
 				}
 			});
 		},
