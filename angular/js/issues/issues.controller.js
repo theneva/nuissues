@@ -120,9 +120,10 @@ angular.module('nuissues').controller('IssuesController', function($scope, Issue
 	$scope.deleteIssue = function(issueToDelete) {
 		IssuesService.delete(issueToDelete._id).success(function() {
 			_.remove($scope.issues[issueToDelete.status], {_id: issueToDelete._id});
-			for (var i = issueToDelete.index; i < $scope.issues[issueToDelete.status].length; i++) {
-				$scope.issues[issueToDelete.status][i].index--;
-				IssuesService.update(issueToDelete._id, {index: issueToDelete.index});
+			for (var issueBelowDeletedIndex = issueToDelete.index; issueBelowDeletedIndex < $scope.issues[issueToDelete.status].length; issueBelowDeletedIndex++) {
+				var issueBelowDeleted = $scope.issues[issueToDelete.status][issueBelowDeletedIndex];
+				issueBelowDeleted.index--;
+				IssuesService.update(issueBelowDeleted._id, {index: issueBelowDeleted.index});
 			}
 		});
 	};
