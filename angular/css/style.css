@@ -27,7 +27,7 @@ body {
 .swimlane {
 	float: left;
 	height: 48em;
-	min-width: 230px;
+	min-width: 283px;
 	padding-left: 10px;
 	padding-right: 10px;
 	margin-right: 30px;
@@ -43,7 +43,7 @@ body {
 
 .issue-container {
 	height: 75px;
-	width: 255px;
+	width: 220px;
 	margin-bottom: 0.7em;
 }
 
